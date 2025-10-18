@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Бронирование - CinemaTicket</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎬 Бронирование билетов</h1>
+            <a href="/" class="btn btn-secondary">Назад</a>
+        </header>
+
+        <div class="booking-container">
+            <div class="movie-info-booking">
+                <img src="{{.movie.PosterURL}}" alt="{{.movie.Title}}" class="movie-poster-large">
+                <div class="movie-details-booking">
+                    <h2>{{.movie.Title}}</h2>
+                    <p>{{.movie.Description}}</p>
+                    <div class="details">
+                        <p><strong>Зал:</strong> {{.movie.HallName}}</p>
+                        <p><strong>Время:</strong> {{.movie.ShowTime.Format "02.01.2006 15:04"}}</p>
+                        <p><strong>Цена:</strong> {{.movie.Price}} ₽</p>
+                    </div>
+                </div>
+            </div>
+
+            <form method="POST" action="/booking/{{.movie.ID}}" class="booking-form">
+                <div class="form-group">
+                    <label for="customer_name">Ваше имя:</label>
+                    <input type="text" id="customer_name" name="customer_name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="customer_email">Email:</label>
+                    <input type="email" id="customer_email" name="customer_email" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Выберите место (1-10):</label>
+                    <div class="seats-grid">
+                        {{range $i := seq 1 10}}
+                        <div class="seat-container">
+                            <input type="radio" id="seat{{$i}}" name="seat_number" value="{{$i}}" 
+                                   {{if contains $.bookedSeats $i}}disabled{{end}}>
+                            <label for="seat{{$i}}" class="seat {{if contains $.bookedSeats $i}}booked{{end}}">
+                                {{$i}}
+                            </label>
+                        </div>
+                        {{end}}
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-book">Забронировать</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

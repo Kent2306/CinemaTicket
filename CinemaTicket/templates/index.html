@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CinemaTicket - Главная</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎬 CinemaTicket</h1>
+            <a href="/add-movie" class="btn btn-primary">Добавить фильм</a>
+        </header>
+
+        <div class="movies-grid">
+            {{range .movies}}
+            <div class="movie-card">
+                <img src="{{.PosterURL}}" alt="{{.Title}}" class="movie-poster">
+                <div class="movie-info">
+                    <h3>{{.Title}}</h3>
+                    <p class="description">{{.Description}}</p>
+                    <div class="movie-details">
+                        <span class="price">{{.Price}} ₽</span>
+                        <span class="hall">{{.HallName}}</span>
+                        <span class="time">{{.ShowTime.Format "02.01.2006 15:04"}}</span>
+                    </div>
+                    <a href="/booking/{{.ID}}" class="btn btn-book">Забронировать</a>
+                </div>
+            </div>
+            {{end}}
+        </div>
+    </div>
+</body>
+</html>

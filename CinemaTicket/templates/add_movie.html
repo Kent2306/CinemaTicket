@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавить фильм - CinemaTicket</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎬 Добавить новый фильм</h1>
+            <a href="/" class="btn btn-secondary">Назад</a>
+        </header>
+
+        <form method="POST" action="/add-movie" class="movie-form">
+            <div class="form-group">
+                <label for="title">Название фильма:</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Описание:</label>
+                <textarea id="description" name="description" rows="4" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="poster_url">URL постера:</label>
+                <input type="url" id="poster_url" name="poster_url" required>
+            </div>
+
+            <div class="form-group">
+                <label for="duration">Длительность (минуты):</label>
+                <input type="number" id="duration" name="duration" required>
+            </div>
+
+            <div class="form-group">
+                <label for="price">Цена билета (₽):</label>
+                <input type="number" step="0.01" id="price" name="price" required>
+            </div>
+
+            <div class="form-group">
+                <label for="hall_id">Зал:</label>
+                <select id="hall_id" name="hall_id" required>
+                    {{range .halls}}
+                    <option value="{{.ID}}">{{.Name}} ({{.Capacity}} мест)</option>
+                    {{end}}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="show_time">Время показа:</label>
+                <input type="datetime-local" id="show_time" name="show_time" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Добавить фильм</button>
+        </form>
+    </div>
+</body>
+</html>
