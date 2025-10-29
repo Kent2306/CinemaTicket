@@ -3,59 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Бронирование - CinemaTicket</title>
+    <title>Бронирование - {{.movie.Title}}</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🎬 Бронирование билетов</h1>
-            <a href="/" class="btn btn-secondary">Назад</a>
-        </header>
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="/" class="logo">CINEMATICKET</a>
+                <a href="/" class="btn btn-secondary">← Все фильмы</a>
+            </nav>
+        </div>
+    </header>
 
-        <div class="booking-container">
-            <div class="movie-info-booking">
-                <img src="{{.movie.PosterURL}}" alt="{{.movie.Title}}" class="movie-poster-large">
-                <div class="movie-details-booking">
-                    <h2>{{.movie.Title}}</h2>
-                    <p>{{.movie.Description}}</p>
-                    <div class="details">
-                        <p><strong>Зал:</strong> {{.movie.HallName}}</p>
-                        <p><strong>Время:</strong> {{.movie.ShowTime.Format "02.01.2006 15:04"}}</p>
-                        <p><strong>Цена:</strong> {{.movie.Price}} ₽</p>
+    <main class="main">
+        <div class="container">
+            <div class="booking-container">
+                <div class="booking-header">
+                    <div class="booking-movie">
+                        <img src="{{.movie.PosterURL}}" alt="{{.movie.Title}}" class="movie-poster-large" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQwIiBoZWlnaHQ9IjM2MCIgdmlld0JveD0iMCAwIDI0MCAzNjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyNDAiIGhlaWdodD0iMzYwIiBmaWxsPSIjMmQyZDJkIi8+CjxwYXRoIGQ9Ik05NiAxODBMMTQ0IDE1MEw5NiAxMjBWMThBWiIgZmlsbD0iI2JiODZmYyIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KPHBhdGggZD0iTTE0NCAyMTBMOTYgMTgwVjEyMEwxNDQgMTUwVjIxMFoiIGZpbGw9IiMwM2RhYzYiIGZpbGwtb3BhY2l0eT0iMC44Ii8+Cjwvc3ZnPgo='">
+                        <div class="movie-info-large">
+                            <h2>{{.movie.Title}}</h2>
+                            <p>{{.movie.Description}}</p>
+                            
+                            <div class="movie-details-grid">
+                                <div class="detail-item">
+                                    <span class="detail-label">Кинозал</span>
+                                    <span class="detail-value">{{.movie.HallName}}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Начало</span>
+                                    <span class="detail-value">{{.movie.ShowTime.Format "02.01 в 15:04"}}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Хронометраж</span>
+                                    <span class="detail-value">{{.movie.Duration}} мин</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Стоимость</span>
+                                    <span class="detail-value">{{.movie.Price}} ₽</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                </div>
+
+                <div class="seats-section">
+                    <form method="POST" action="/booking/{{.movie.ID}}">
+                        <h3 class="section-title">Выберите ваше место</h3>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Ваше имя</label>
+                            <input type="text" name="customer_name" class="form-input" placeholder="Введите ваше полное имя" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Email для подтверждения</label>
+                            <input type="email" name="customer_email" class="form-input" placeholder="your@email.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Выберите место в зале</label>
+                            <div class="seats-grid">
+                                {{range $i := seq 1 10}}
+                                <div class="seat-container">
+                                    <input type="radio" id="seat{{$i}}" name="seat_number" value="{{$i}}" 
+                                           {{if contains $.bookedSeats $i}}disabled{{end}} required>
+                                    <label for="seat{{$i}}" class="seat {{if contains $.bookedSeats $i}}booked{{end}}">
+                                        {{$i}}
+                                    </label>
+                                </div>
+                                {{end}}
+                            </div>
+                            <div style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary);">
+                                <span style="color: var(--accent);">●</span> Доступно • 
+                                <span style="color: var(--text-muted);">●</span> Занято
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-success" style="width: 100%; justify-content: center;">
+                            <span>✨</span>
+                            Подтвердить бронирование
+                        </button>
+                    </form>
                 </div>
             </div>
-
-            <form method="POST" action="/booking/{{.movie.ID}}" class="booking-form">
-                <div class="form-group">
-                    <label for="customer_name">Ваше имя:</label>
-                    <input type="text" id="customer_name" name="customer_name" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="customer_email">Email:</label>
-                    <input type="email" id="customer_email" name="customer_email" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Выберите место (1-10):</label>
-                    <div class="seats-grid">
-                        {{range $i := seq 1 10}}
-                        <div class="seat-container">
-                            <input type="radio" id="seat{{$i}}" name="seat_number" value="{{$i}}" 
-                                   {{if contains $.bookedSeats $i}}disabled{{end}}>
-                            <label for="seat{{$i}}" class="seat {{if contains $.bookedSeats $i}}booked{{end}}">
-                                {{$i}}
-                            </label>
-                        </div>
-                        {{end}}
-                    </div>
-                </div>
-
-                <button type="submit" class="btn btn-book">Забронировать</button>
-            </form>
         </div>
-    </div>
+    </main>
 </body>
 </html>
