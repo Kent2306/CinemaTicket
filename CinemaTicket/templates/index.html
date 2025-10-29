@@ -3,33 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CinemaTicket - Главная</title>
+    <title>CinemaTicket - Премиум кинотеатр</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🎬 CinemaTicket</h1>
-            <a href="/add-movie" class="btn btn-primary">Добавить фильм</a>
-        </header>
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="/" class="logo">CINEMATICKET</a>
+                <a href="/add-movie" class="btn btn-primary">
+                    <span>✨</span>
+                    Добавить фильм
+                </a>
+            </nav>
+        </div>
+    </header>
 
-        <div class="movies-grid">
-            {{range .movies}}
-            <div class="movie-card">
-                <img src="{{.PosterURL}}" alt="{{.Title}}" class="movie-poster">
-                <div class="movie-info">
-                    <h3>{{.Title}}</h3>
-                    <p class="description">{{.Description}}</p>
-                    <div class="movie-details">
-                        <span class="price">{{.Price}} ₽</span>
-                        <span class="hall">{{.HallName}}</span>
-                        <span class="time">{{.ShowTime.Format "02.01.2006 15:04"}}</span>
+    <main class="main">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">ЭКСКЛЮЗИВНЫЙ КИНОЗАЛ</h1>
+                <p class="page-subtitle">Погрузитесь в мир кинематографа с нашими премиум показами</p>
+            </div>
+
+            {{if .movies}}
+            <div class="movies-grid">
+                {{range .movies}}
+                <div class="movie-card">
+                    <img src="{{.PosterURL}}" alt="{{.Title}}" class="movie-poster" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjMyMCIgdmlld0JveD0iMCAwIDMyMCAzMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMjAiIGhlaWdodD0iMzIwIiBmaWxsPSIjMmQyZDJkIi8+CjxwYXRoIGQ9Ik0xMjAgMTYwTDE2MCAxNDBMMTIwIDEyMFYxNjBaIiBmaWxsPSIjYmI4NmZjIiBmaWxsLW9wYWNpdHk9IjAuOCIvPgo8cGF0aCBkPSJNMTYwIDE4MEwxMjAgMTYwVjEyMEwxNjAgMTQwVjE4MFoiIGZpbGw9IiMwM2RhYzYiIGZpbGwtb3BhY2l0eT0iMC44Ii8+Cjwvc3ZnPgo='">
+                    <div class="movie-content">
+                        <h3 class="movie-title">{{.Title}}</h3>
+                        <p class="movie-description">{{.Description}}</p>
+                        
+                        <div class="movie-details">
+                            <div class="movie-price">{{.Price}} ₽</div>
+                            <div class="movie-meta">
+                                <div class="meta-item">
+                                    <span>🎭</span>
+                                    {{.HallName}}
+                                </div>
+                                <div class="meta-item">
+                                    <span>🕒</span>
+                                    {{.ShowTime.Format "02.01 15:04"}}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <a href="/booking/{{.ID}}" class="btn btn-success" style="width: 100%; text-align: center; justify-content: center;">
+                            <span>🎫</span>
+                            Забронировать место
+                        </a>
                     </div>
-                    <a href="/booking/{{.ID}}" class="btn btn-book">Забронировать</a>
                 </div>
+                {{end}}
+            </div>
+            {{else}}
+            <div class="empty-state">
+                <div class="empty-state-icon">🎬</div>
+                <h3 class="empty-state-text">Репертуар готовится</h3>
+                <p>Скоро здесь появятся эксклюзивные кинопоказы</p>
+                <a href="/add-movie" class="btn btn-primary mt-4">Создать первый показ</a>
             </div>
             {{end}}
         </div>
-    </div>
+    </main>
 </body>
 </html>
