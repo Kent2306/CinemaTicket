@@ -3,58 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Добавить фильм - CinemaTicket</title>
+    <title>Новый фильм - CinemaTicket</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🎬 Добавить новый фильм</h1>
-            <a href="/" class="btn btn-secondary">Назад</a>
-        </header>
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="/" class="logo">CINEMATICKET</a>
+                <a href="/" class="btn btn-secondary">← Назад в зал</a>
+            </nav>
+        </div>
+    </header>
 
-        <form method="POST" action="/add-movie" class="movie-form">
-            <div class="form-group">
-                <label for="title">Название фильма:</label>
-                <input type="text" id="title" name="title" required>
+    <main class="main">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">НОВЫЙ ФИЛЬМ</h1>
+                <p class="page-subtitle">Добавьте эксклюзивный кинопоказ в нашу коллекцию</p>
             </div>
 
-            <div class="form-group">
-                <label for="description">Описание:</label>
-                <textarea id="description" name="description" rows="4" required></textarea>
-            </div>
+            <div class="form-container">
+                <form method="POST" action="/add-movie">
+                    <div class="form-group">
+                        <label class="form-label">Название фильма</label>
+                        <input type="text" name="title" class="form-input" placeholder="Введите название фильма" required>
+                    </div>
 
-            <div class="form-group">
-                <label for="poster_url">URL постера:</label>
-                <input type="url" id="poster_url" name="poster_url" required>
-            </div>
+                    <div class="form-group">
+                        <label class="form-label">Описание</label>
+                        <textarea name="description" class="form-textarea" placeholder="Опишите сюжет и особенности фильма..." rows="4" required></textarea>
+                    </div>
 
-            <div class="form-group">
-                <label for="duration">Длительность (минуты):</label>
-                <input type="number" id="duration" name="duration" required>
-            </div>
+                    <div class="form-group">
+                        <label class="form-label">URL постера</label>
+                        <input type="url" name="poster_url" class="form-input" placeholder="https://example.com/poster.jpg" required>
+                    </div>
 
-            <div class="form-group">
-                <label for="price">Цена билета (₽):</label>
-                <input type="number" step="0.01" id="price" name="price" required>
-            </div>
+                    <div class="form-group">
+                        <label class="form-label">Длительность (минуты)</label>
+                        <input type="number" name="duration" class="form-input" placeholder="120" min="1" required>
+                    </div>
 
-            <div class="form-group">
-                <label for="hall_id">Зал:</label>
-                <select id="hall_id" name="hall_id" required>
-                    {{range .halls}}
-                    <option value="{{.ID}}">{{.Name}} ({{.Capacity}} мест)</option>
-                    {{end}}
-                </select>
-            </div>
+                    <div class="form-group">
+                        <label class="form-label">Цена билета (₽)</label>
+                        <input type="number" step="0.01" name="price" class="form-input" placeholder="500.00" min="0" required>
+                    </div>
 
-            <div class="form-group">
-                <label for="show_time">Время показа:</label>
-                <input type="datetime-local" id="show_time" name="show_time" required>
-            </div>
+                    <div class="form-group">
+                        <label class="form-label">Зал</label>
+                        <select name="hall_id" class="form-select" required>
+                            {{range .halls}}
+                            <option value="{{.ID}}">{{.Name}} • {{.Capacity}} мест</option>
+                            {{end}}
+                        </select>
+                    </div>
 
-            <button type="submit" class="btn btn-primary">Добавить фильм</button>
-        </form>
-    </div>
+                    <div class="form-group">
+                        <label class="form-label">Время показа</label>
+                        <input type="datetime-local" name="show_time" class="form-input" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                        <span>🎬</span>
+                        Создать кинопоказ
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
 </body>
 </html>
